@@ -1,0 +1,39 @@
+name: Fetch nightly
+
+on:
+  schedule:
+  # Run at 11:25pm daily
+  - cron: '25 23 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.3.3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+
+    - name: Build
+      run: |
+        npm i
+        npm run build
+
+    - name: Run for Inspektor Gadget
+      env:
+        PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        mkdir -p ./stats/inspektor-gadget
+        node ./dist/index.js kinvolk inspektor-gadget > ./stats/inspektor-gadget/$(date +'%F_%T%z').json
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'Github Fetch Nightly Action'
+        git config --global user.email 'joaquimrocha@users.noreply.github.com'
+        git add ./stats
+        # Commit if there are changes
+        if ! $(git diff --cached --quiet); then git commit -m "stats: Update Inspektor Gadget nightly" && git push origin HEAD:main; fi
