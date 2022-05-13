@@ -30,24 +30,10 @@ jobs:
         mkdir -p ./stats/headlamp
         node ./dist/index.js kinvolk headlamp > ./stats/headlamp/$(date +'%F_%T%z').json
 
-    - name: Run for Inspektor Gadget
-      env:
-        PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        mkdir -p ./stats/inspektor-gadget
-        node ./dist/index.js kinvolk inspektor-gadget > ./stats/inspektor-gadget/$(date +'%F_%T%z').json
-
-    - name: Run for Nebraska
-      env:
-        PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        mkdir -p ./stats/nebraska
-        node ./dist/index.js kinvolk nebraska > ./stats/nebraska/$(date +'%F_%T%z').json
-
     - name: Commit changes
       run: |
         git config --global user.name 'Github Fetch Nightly Action'
         git config --global user.email 'joaquimrocha@users.noreply.github.com'
         git add ./stats
         # Commit if there are changes
-        if ! $(git diff --cached --quiet); then git commit -m "stats: Update nightly" && git push origin HEAD:main; fi
+        if ! $(git diff --cached --quiet); then git commit -m "stats: Update Headlamp nightly" && git push origin HEAD:main; fi
