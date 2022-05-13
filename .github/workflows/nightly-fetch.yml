@@ -23,12 +23,12 @@ jobs:
         npm i
         npm run build
 
-    - name: Run
+    - name: Run for Headlamp
       env:
         PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        mkdir -p ./stats
-        node ./dist/index.js kinvolk headlamp > ./stats/$(date +'%F_%T%z').json
+        mkdir -p ./stats/headlamp
+        node ./dist/index.js kinvolk headlamp > ./stats/headlamp/$(date +'%F_%T%z').json
 
     - name: Commit changes
       run: |
