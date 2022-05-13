@@ -1,4 +1,4 @@
-name: Fetch nightly
+name: Fetch Headlamp nightly
 
 on:
   schedule:
