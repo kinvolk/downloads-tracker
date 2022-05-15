@@ -1,0 +1,422 @@
+{
+  "date": "2022-05-15T23:40:29.185Z",
+  "package": {
+    "sha256:a26fe6604923e0f2ca904da2375e8667148aa3556636d70c54edae9d14841833": {
+      "tags": [
+        "rc-2.7.1"
+      ],
+      "downloads": {
+        "ever": 0,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:234fb715a7db1f9a0cf898133358299fd5cb661678ee6e5096d2f48b7ca4d4c2": {
+      "tags": [
+        "staging"
+      ],
+      "downloads": {
+        "ever": 2,
+        "month": 2,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:230892c6716a477152868d04d4b6114ea634c40c5e7b0703a802ea1710ac0f9e": {
+      "tags": [],
+      "downloads": {
+        "ever": 2,
+        "month": 1,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:fd1c0ac0a3b5f275a2be28c7907969b5ccee3b24ff507e2b8bad1d1d718b0e33": {
+      "tags": [
+        "latest",
+        "2.7.0"
+      ],
+      "downloads": {
+        "ever": 45,
+        "month": 18,
+        "week": 3,
+        "today": 0
+      }
+    },
+    "sha256:e35b472d763320c8bf1af664caf2a8af815aa2f86da6147564b5dbdf9ada891c": {
+      "tags": [],
+      "downloads": {
+        "ever": 19,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:42f96adab1961434b814721f889cd2fb63a5f2a6d2158cc6900658f8aa3265a2": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:15ba1bd8e8d365f177a502c2678266c99ca84bf227a4ba41e2a50beb4e0b86ae": {
+      "tags": [
+        "docker-changes"
+      ],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:65e8b8ab2d987fec19b3199e86129c8ea183ea3f9d283965dc6ad67aa2c8d310": {
+      "tags": [
+        "2.6.1"
+      ],
+      "downloads": {
+        "ever": 95,
+        "month": 23,
+        "week": 13,
+        "today": 1
+      }
+    },
+    "sha256:4fc7fe8f9df35c7ba844871f707fa8947a557fb69f560fccac45241009880706": {
+      "tags": [],
+      "downloads": {
+        "ever": 8,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:93d6de05d028b556c2f32fd367d4820da3b1c935625c8e25edeabac98c47bd17": {
+      "tags": [],
+      "downloads": {
+        "ever": 0,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:b2332ac91871ea36a73a96fdaee1a8ff3451f6b146799a5c667aae238cfb4394": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:9065c35c0db6767fc0bed48909e41e352adbf7356e9bd951a834b58f2b027fe7": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:66f7485ab8f576c700aaf1b93c4f51f488507103099048cf6e2d65128e40b925": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:2d927816298f0fc91bfbdbcf00159fa4f484eb2a12b372de068ee61e08d1718e": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:66fec80eadb86db17ccbabb00c84ab6e199d820b285f50f6c3f6fe201ccae354": {
+      "tags": [],
+      "downloads": {
+        "ever": 0,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:fd4e0f16778e08504aeb1bdbccb19a97a8afd57a43876f8e50779d25fa55374d": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:2181e5814466e410d15da7ac9f3530cdb4722b8deab6ddaec4dbe148920ecf2a": {
+      "tags": [
+        "github_token"
+      ],
+      "downloads": {
+        "ever": 3,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:f1c69e1f03cf7e9cbb61d7970dd0ef8cc17bb4d0125ea251be58cd7295d17adb": {
+      "tags": [
+        "2.6.0"
+      ],
+      "downloads": {
+        "ever": 2483,
+        "month": 1,
+        "week": 1,
+        "today": 0
+      }
+    },
+    "sha256:23559b93278ea3faa8167a31c0fe945ff493a6f5bcab00e5e9162b9a6b3ac024": {
+      "tags": [],
+      "downloads": {
+        "ever": 4,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:8822b7e7290223ce032d1605abf8270d2fd4549df5392c2259ec90ff3b0ca9f4": {
+      "tags": [
+        "pr-503"
+      ],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:86ab3e53df832a4d4f445be4a099bb04763f7152f97b0b1f09116e08e48e9bae": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:aab0dd0518486ccd38a4c50bbd941ce9ef92110b004ac0fb9abcae966eee04fa": {
+      "tags": [],
+      "downloads": {
+        "ever": 3,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:97f2eb9de4a151e4071ed7ba6548cbfb13ee0087c3c9632cdbae97e2ef478be4": {
+      "tags": [],
+      "downloads": {
+        "ever": 3,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:7b5dd594d9026214487e6dfcaa55425a0319635f4d25131424e45751ed6b0235": {
+      "tags": [],
+      "downloads": {
+        "ever": 2,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:e7c1ce55b3fe3ddded4a10d8c5b98f5a86d21d00e982d5b76d737fc1b84f8100": {
+      "tags": [],
+      "downloads": {
+        "ever": 45,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:9d1f97caca0d043eab1d5e738afd128d933792947b0bac89cb234d0b56ba09a0": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:297bbe622f4629591a4b7ba64ad899e7e14fe277a5e3bb4f2aed3a4dd57b40ed": {
+      "tags": [],
+      "downloads": {
+        "ever": 1,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:1d878edee40ce45cc3cceaa2087985c6da1064c795c04cbe018fc41f91fbe834": {
+      "tags": [
+        "2.5.1"
+      ],
+      "downloads": {
+        "ever": 501,
+        "month": 4,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:0c1ad279fb531fc3292be33af89e3d232b4f6a7804f8c12f2fe62b6f2a1a68dd": {
+      "tags": [],
+      "downloads": {
+        "ever": 2,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    },
+    "sha256:1355477c55467ca7b1c7e2b7abec145e32300c336f6768d0fab60e533221ee50": {
+      "tags": [],
+      "downloads": {
+        "ever": 0,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    }
+  },
+  "releases": {
+    "nebraska-helm-0.4.0": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.4.0.tgz",
+        "downloads": 33
+      }
+    ],
+    "2.7.0": [],
+    "2.6.1": [],
+    "nebraska-helm-0.3.0": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.3.0.tgz",
+        "downloads": 59
+      }
+    ],
+    "2.6.0": [],
+    "nebraska-helm-0.2.1": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.2.1.tgz",
+        "downloads": 6
+      }
+    ],
+    "nebraska-helm-0.2.0": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.2.0.tgz",
+        "downloads": 17
+      }
+    ],
+    "nebraska-helm-0.1.11": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.11.tgz",
+        "downloads": 13
+      }
+    ],
+    "nebraska-helm-0.1.10": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.10.tgz",
+        "downloads": 16
+      }
+    ],
+    "nebraska-helm-0.1.9": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.9.tgz",
+        "downloads": 30
+      }
+    ],
+    "nebraska-helm-0.1.8": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.8.tgz",
+        "downloads": 174
+      }
+    ],
+    "2.5.1": [],
+    "2.5.0": [],
+    "nebraska-helm-0.1.7": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.7.tgz",
+        "downloads": 33
+      }
+    ],
+    "nebraska-helm-0.1.6": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.6.tgz",
+        "downloads": 32
+      }
+    ],
+    "2.4.1": [],
+    "nebraska-helm-0.1.5": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.5.tgz",
+        "downloads": 459
+      }
+    ],
+    "2.4.0": [],
+    "2.3.5": [],
+    "nebraska-helm-0.1.4": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.4.tgz",
+        "downloads": 136
+      }
+    ],
+    "nebraska-helm-0.1.3": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.3.tgz",
+        "downloads": 71
+      }
+    ],
+    "2.3.4": [],
+    "nebraska-helm-0.1.2": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.2.tgz",
+        "downloads": 1
+      }
+    ],
+    "nebraska-helm-0.1.1": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.1.tgz",
+        "downloads": 4
+      }
+    ],
+    "nebraska-helm-0.1.0": [
+      {
+        "content_type": "application/x-gtar-compressed",
+        "name": "nebraska-0.1.0.tgz",
+        "downloads": 4
+      }
+    ],
+    "2.3.3": [],
+    "2.3.2": [],
+    "2.3.1": [],
+    "2.3.0": [],
+    "2.3.0-beta.1": []
+  }
+}
