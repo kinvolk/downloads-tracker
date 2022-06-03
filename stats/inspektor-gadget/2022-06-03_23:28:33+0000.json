@@ -1,0 +1,362 @@
+{
+  "date": "2022-06-03T23:28:40.564Z",
+  "package": {
+    "sha256:954276d565ecfbbf84adc8257f58cffbee6f6dc26fbf704101f9811c8894d6b9": {
+      "tags": [
+        "francis-use-ghcr"
+      ],
+      "downloads": {
+        "ever": 0,
+        "month": 0,
+        "week": 0,
+        "today": 0
+      }
+    }
+  },
+  "releases": {
+    "v0.5.1": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 0
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-darwin-amd64.tar.gz",
+        "downloads": 5
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-darwin-arm64.tar.gz",
+        "downloads": 2
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-linux-amd64.tar.gz",
+        "downloads": 6
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-linux-arm64.tar.gz",
+        "downloads": 3
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-windows-amd64.tar.gz",
+        "downloads": 3
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-amd64.tar.gz",
+        "downloads": 0
+      }
+    ],
+    "v0.5.0": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 1
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-darwin-amd64.tar.gz",
+        "downloads": 37
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-darwin-arm64.tar.gz",
+        "downloads": 18
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-linux-amd64.tar.gz",
+        "downloads": 139
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-linux-arm64.tar.gz",
+        "downloads": 6
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "kubectl-gadget-windows-amd64.tar.gz",
+        "downloads": 9
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-amd64.tar.gz",
+        "downloads": 4
+      }
+    ],
+    "v0.4.2": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 18
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 129
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-arm64.tar.gz",
+        "downloads": 35
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 1568
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-arm64.tar.gz",
+        "downloads": 12
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-windows-amd64.tar.gz",
+        "downloads": 25
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-amd64.tar.gz",
+        "downloads": 6
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-arm64.tar.gz",
+        "downloads": 3
+      }
+    ],
+    "v0.4.1": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 4
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 31
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-arm64.tar.gz",
+        "downloads": 11
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 53
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-arm64.tar.gz",
+        "downloads": 7
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-windows-amd64.tar.gz",
+        "downloads": 6
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-amd64.tar.gz",
+        "downloads": 3845
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-arm64.tar.gz",
+        "downloads": 1490
+      }
+    ],
+    "v0.4.0": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 2
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 18
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-arm64.tar.gz",
+        "downloads": 4
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 12
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-arm64.tar.gz",
+        "downloads": 4
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-windows-amd64.tar.gz",
+        "downloads": 4
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-amd64.tar.gz",
+        "downloads": 5
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "local-gadget-linux-arm64.tar.gz",
+        "downloads": 1
+      }
+    ],
+    "v0.3.1": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 2
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 54
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-arm64.tar.gz",
+        "downloads": 11
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 102
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-arm64.tar.gz",
+        "downloads": 4
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-windows-amd64.tar.gz",
+        "downloads": 12
+      }
+    ],
+    "v0.3.0": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 2
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 48
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-arm64.tar.gz",
+        "downloads": 4
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 67
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-arm64.tar.gz",
+        "downloads": 5
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-windows-amd64.tar.gz",
+        "downloads": 6
+      }
+    ],
+    "v0.2.1": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 11
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 218
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 825
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-windows-amd64.tar.gz",
+        "downloads": 29
+      }
+    ],
+    "v0.2.0": [
+      {
+        "content_type": "application/x-yaml",
+        "name": "gadget-integration-tests-job.yaml",
+        "downloads": 11
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 200
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 796
+      }
+    ],
+    "v0.1.0": [
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-darwin-amd64.tar.gz",
+        "downloads": 51
+      },
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget-linux-amd64.tar.gz",
+        "downloads": 57
+      }
+    ],
+    "v0.1.0-alpha.5": [
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget.tar.gz",
+        "downloads": 77
+      }
+    ],
+    "v0.1.0-alpha.4": [
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget.tar.gz",
+        "downloads": 16
+      }
+    ],
+    "v0.1.0-alpha.3": [
+      {
+        "content_type": "application/gzip",
+        "name": "inspektor-gadget.tar.gz",
+        "downloads": 17
+      }
+    ],
+    "v0.1.0-alpha.2": [
+      {
+        "content_type": "application/octet-stream",
+        "name": "inspektor-gadget",
+        "downloads": 8
+      }
+    ],
+    "v0.1.0-alpha.1": []
+  }
+}
