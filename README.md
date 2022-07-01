@@ -5,10 +5,13 @@ A script that fetches download stats for Github releases and GHCR packages.
 ## Usage
 
 ```bash
-PERSONAL_ACCESS_TOKEN="abcdf..."
-
-npm run build
-node ./index.js MyOrg RepoName
+GITHUB_TOKEN="ghp_*****"
+GITHUB_ORG=kinvolk
+GITHUB_REPOS=headlamp,nebraska
+PUSHGATEWAY_URL=http://localhost:9091
+PUSHGATEWAY_USERNAME=test
+PUSHGATEWAY_PASSWORD=test@123
+go run main.go
 ```
 
-This will print out the stats to stdout.
+This will extract the metrics and push it to pushgateway.
