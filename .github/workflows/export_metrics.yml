@@ -1,0 +1,30 @@
+name: Extract and push metrics
+
+on:
+  schedule:
+  # Run every 15 minutes
+  - cron: '*/15 * * * *'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2.3.3
+
+    - name: Install golang
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.18'
+
+    - name: Extract and push metrics 
+      env: 
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        GITHUB_ORG: kinvolk 
+        GITHUB_REPOS: headlamp,nebraska,inspektor-gadget
+        PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
+        PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
+        PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
+      run: go run main.go
+
