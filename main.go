@@ -25,8 +25,14 @@ var releaseCounter = prometheus.NewCounterVec(prometheus.CounterOpts{
 // ContainerCounter is a prometheus counter metric for container downloads
 var containerCounter = prometheus.NewCounterVec(prometheus.CounterOpts{
 	Name: "container_downloads",
-	Help: "Number of downloads of headlamp containers",
+	Help: "Number of downloads of containers",
 }, []string{"repository", "version"})
+
+// StarCounter is a prometheus counter metric for star counts
+var starCounter = prometheus.NewCounterVec(prometheus.CounterOpts{
+	Name: "star_count",
+	Help: "Number of stars",
+}, []string{"repository"})
 
 func main() {
 
@@ -70,11 +76,13 @@ func main() {
 	// register prometheus metrics
 	prometheus.MustRegister(releaseCounter)
 	prometheus.MustRegister(containerCounter)
+	prometheus.MustRegister(starCounter)
 
+	client := gitClient(token)
 	for _, repo := range repos {
 		log.Printf("Processing repo: %s\n", repo)
 		// fetch release info
-		releaseInfos, err := fetchReleaseInfo(token, org, repo)
+		releaseInfos, err := fetchReleaseInfo(client, org, repo)
 		if err != nil {
 			log.Fatalf("Error fetching release info for repo:%s, err:%v\n", repo, err)
 		}
@@ -94,11 +102,18 @@ func main() {
 		for version, count := range containerDownloads {
 			containerCounter.With(prometheus.Labels{"repository": repo, "version": version}).Add(float64(count))
 		}
+
+		// fetch star count
+		repoInfo, _, err := client.Repositories.Get(context.TODO(), org, repo)
+		if err != nil {
+			log.Fatalf("Error fetching star count info for repo:%s,err:%v\n", repo, err)
+		}
+		starCounter.With(prometheus.Labels{"repository": repo}).Add(float64(*repoInfo.StargazersCount))
 	}
 
 	// push metrics to pushgateway
 	log.Println("Pushing metrics to pushgateway 🏹")
-	err := push.New(pushgateway, "download_metrics").BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Push()
+	err := push.New(pushgateway, "download_metrics").BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Collector(starCounter).Push()
 	if err != nil {
 		log.Fatal("Error pushing metrics", err)
 	}
@@ -111,11 +126,7 @@ type ReleaseInfo struct {
 }
 
 // fetchReleaseInfo fetches release info for a given repo
-func fetchReleaseInfo(token string, org string, repo string) ([]ReleaseInfo, error) {
-	// init github client with token and fetch releases
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(context.TODO(), ts)
-	client := github.NewClient(tc)
+func fetchReleaseInfo(client *github.Client, org string, repo string) ([]ReleaseInfo, error) {
 	releases, _, err := client.Repositories.ListReleases(context.TODO(), org, repo, nil)
 	if err != nil {
 		return nil, err
@@ -130,6 +141,13 @@ func fetchReleaseInfo(token string, org string, repo string) ([]ReleaseInfo, err
 		releaseInfos = append(releaseInfos, ReleaseInfo{*release.TagName, releaseAssets})
 	}
 	return releaseInfos, nil
+}
+
+// gitClient is a github client
+func gitClient(token string) *github.Client {
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	tc := oauth2.NewClient(context.TODO(), ts)
+	return github.NewClient(tc)
 }
 
 // processContainerPackagesURL returns a map of container versions to download counts
