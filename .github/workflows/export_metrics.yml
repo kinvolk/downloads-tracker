@@ -2,8 +2,8 @@ name: Extract and push metrics
 
 on:
   schedule:
-  # Run every 15 minutes
-  - cron: '*/15 * * * *'
+  # Run every hour
+  - cron: '0 * * * *'
 
   workflow_dispatch:
 
