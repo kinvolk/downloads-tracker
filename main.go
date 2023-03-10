@@ -12,7 +12,6 @@ import (
 	"github.com/google/go-github/v45/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/push"
-	"github.com/prometheus/common/expfmt"
 	"golang.org/x/net/html"
 	"golang.org/x/oauth2"
 )
@@ -110,30 +109,15 @@ func main() {
 			log.Fatalf("Error fetching star count info for repo:%s,err:%v\n", repo, err)
 		}
 		starCounter.With(prometheus.Labels{"repository": repo}).Add(float64(*repoInfo.StargazersCount))
-	}
 
-	// Create a TextEncoder to write metrics to stdout.
-	encoder := expfmt.NewEncoder(os.Stdout, expfmt.FmtText)
-
-	// Write the metrics to stdout.
-	mfs, err := prometheus.DefaultGatherer.Gather()
-	if err != nil {
-		log.Fatal("Error fetching metrics from Gatherer", err)
-	}
-
-	for _, mf := range mfs {
-		if err := encoder.Encode(mf); err != nil {
-			log.Fatal("Error encoding metrics", err)
+		// push metrics to pushgateway
+		log.Println("Pushing metrics to pushgateway 🏹")
+		err = push.New(pushgateway, fmt.Sprintf("download_metrics_%s", repo)).BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Collector(starCounter).Push()
+		if err != nil {
+			log.Fatal("Error pushing metrics", err)
 		}
+		log.Println("👏 Successfully pushed metrics to pushgateway 👋")
 	}
-
-	// push metrics to pushgateway
-	log.Println("Pushing metrics to pushgateway 🏹")
-	err = push.New(pushgateway, "download_metrics").BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Collector(starCounter).Push()
-	if err != nil {
-		log.Fatal("Error pushing metrics", err)
-	}
-	log.Println("👏 Successfully pushed metrics to pushgateway 👋")
 }
 
 type ReleaseInfo struct {
