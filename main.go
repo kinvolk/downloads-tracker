@@ -109,15 +109,15 @@ func main() {
 			log.Fatalf("Error fetching star count info for repo:%s,err:%v\n", repo, err)
 		}
 		starCounter.With(prometheus.Labels{"repository": repo}).Add(float64(*repoInfo.StargazersCount))
-	}
 
-	// push metrics to pushgateway
-	log.Println("Pushing metrics to pushgateway 🏹")
-	err := push.New(pushgateway, "download_metrics").BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Collector(starCounter).Push()
-	if err != nil {
-		log.Fatal("Error pushing metrics", err)
+		// push metrics to pushgateway
+		log.Println("Pushing metrics to pushgateway 🏹")
+		err = push.New(pushgateway, fmt.Sprintf("download_metrics_%s", repo)).BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Collector(starCounter).Push()
+		if err != nil {
+			log.Fatal("Error pushing metrics", err)
+		}
+		log.Println("👏 Successfully pushed metrics to pushgateway 👋")
 	}
-	log.Println("👏 Successfully pushed metrics to pushgateway 👋")
 }
 
 type ReleaseInfo struct {
