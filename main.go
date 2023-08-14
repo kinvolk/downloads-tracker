@@ -173,10 +173,15 @@ func processContainerPackagesURL(url string) (map[string]int, error) {
 			downloads[1] = strings.TrimLeft(downloads[1], " ")
 			downloads[1] = strings.TrimRight(downloads[1], " ")
 			downloads[1] = strings.TrimSuffix(downloads[1], "\n")
-			downloads[1] = strings.ReplaceAll(downloads[1], ",", "")
 			downloads = []string{downloads[1]}
 		}
-		count, err := strconv.Atoi(downloads[0])
+
+		// Trim any whitespace around the download count
+		countStr := strings.TrimSpace(downloads[0])
+		// Remove decimal comma
+		countStr = strings.ReplaceAll(countStr, ",", "")
+
+		count, err := strconv.Atoi(countStr)
 		if err != nil {
 			return nil, err
 		}
@@ -189,7 +194,10 @@ func processContainerPackagesURL(url string) (map[string]int, error) {
 func innerTextOfNodes(nodes []*html.Node) []string {
 	innerTexts := []string{}
 	for _, node := range nodes {
-		innerTexts = append(innerTexts, htmlquery.InnerText(node))
+		nodeText := strings.TrimSpace(htmlquery.InnerText(node))
+		if nodeText != "" {
+			innerTexts = append(innerTexts, htmlquery.InnerText(node))
+		}
 	}
 	return innerTexts
 }
