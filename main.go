@@ -94,15 +94,29 @@ func main() {
 		}
 		// fetch container info
 		url := fmt.Sprintf("https://github.com/%s/%s/pkgs/container/%s/versions", org, repo, repo)
-		containerDownloads, err := processContainerPackagesURL(url)
-		if err != nil {
-			log.Fatalf("Error fetching container info for repo:%s, err:%v\n", repo, err)
+		containerDownloads := make(map[string]int)
+		page := 1
+		for {
+			fmt.Println(url)
+			containerDownloadsPage, err := processContainerPackagesURL(url)
+			if err != nil {
+				log.Fatalf("Error fetching container info for repo:%s, err:%v\n", repo, err)
+			}
+			if len(containerDownloadsPage) == 0 {
+				break
+			}
+			for version, count := range containerDownloadsPage {
+				containerDownloads[version] = count
+			}
+
+			url, _ = strings.CutSuffix(url, fmt.Sprintf("?page=%d", page))
+			page++
+			url = fmt.Sprintf("%s?page=%d", url, page)
 		}
 		// iterate over container downloads and set metrics
 		for version, count := range containerDownloads {
 			containerCounter.With(prometheus.Labels{"repository": repo, "version": version}).Add(float64(count))
 		}
-
 		// fetch star count
 		repoInfo, _, err := client.Repositories.Get(context.TODO(), org, repo)
 		if err != nil {
