@@ -16,7 +16,7 @@ jobs:
     - name: Install golang
       uses: actions/setup-go@v3
       with:
-        go-version: '1.18'
+        go-version: '1.22'
 
     - name: Extract and push metrics for nebraska
       env: 
