@@ -1,6 +1,6 @@
 module downloads_tracker
 
-go 1.18
+go 1.22
 
 require (
 	github.com/antchfx/htmlquery v1.2.5
