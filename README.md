@@ -22,4 +22,4 @@ We don't touch this repo much and Github actions get disabled if the repo doesn'
 in a timeframe of 60 days. So let's use the date below with a scheduled action that updates it
 in order to not let the actions be turned off.
 
-Last update: 2023-12-21
+Last update: 2024-07-24
