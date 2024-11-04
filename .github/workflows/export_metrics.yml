@@ -21,7 +21,7 @@ jobs:
     - name: Extract and push metrics for nebraska
       env: 
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        GITHUB_ORG: kinvolk 
+        GITHUB_ORG: flatcar 
         GITHUB_REPOS: nebraska
         PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
         PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
