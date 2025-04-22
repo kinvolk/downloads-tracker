@@ -84,7 +84,8 @@ func main() {
 		// fetch release info
 		releaseInfos, err := fetchReleaseInfo(client, org, repo)
 		if err != nil {
-			log.Fatalf("Error fetching release info for repo:%s, err:%v\n", repo, err)
+			log.Printf("Error fetching release info for repo:%s, err:%v\n", repo, err)
+			continue
 		}
 		// iterate over releases and set metrics
 		for _, releaseInfo := range releaseInfos {
@@ -100,7 +101,8 @@ func main() {
 			fmt.Println(url)
 			containerDownloadsPage, err := processContainerPackagesURL(url)
 			if err != nil {
-				log.Fatalf("Error fetching container info for repo:%s, err:%v\n", repo, err)
+				log.Printf("Error fetching container info for repo:%s, err:%v\n", repo, err)
+				break
 			}
 			if len(containerDownloadsPage) == 0 {
 				break
