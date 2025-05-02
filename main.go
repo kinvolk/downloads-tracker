@@ -42,17 +42,27 @@ func main() {
 		log.Fatal("GITHUB_TOKEN not set")
 	}
 
-	// fetch org and repo from environment variable
-	org := os.Getenv("GITHUB_ORG")
-	if org == "" {
+	// fetch default org and repos from environment variables
+	defaultOrg := os.Getenv("GITHUB_ORG")
+	if defaultOrg == "" {
 		log.Fatal("GITHUB_ORG not set")
 	}
 
-	// fetch command separated repos from environment variable
-	reposEnv := os.Getenv("GITHUB_REPOS")
-	if reposEnv == "" {
+	defaultReposEnv := os.Getenv("GITHUB_REPOS")
+	if defaultReposEnv == "" {
 		log.Fatal("GITHUB_REPOS not set")
 	}
+	defaultRepos := strings.Split(defaultReposEnv, ",")
+
+	// fetch org and repos for assets (release downloads)
+	assetsOrg := getEnvWithDefault("ASSETS_GITHUB_ORG", defaultOrg)
+	assetsReposEnv := getEnvWithDefault("ASSETS_GITHUB_REPOS", defaultReposEnv)
+	assetsRepos := strings.Split(assetsReposEnv, ",")
+
+	// fetch org and repos for container images
+	imageOrg := getEnvWithDefault("IMAGE_GITHUB_ORG", defaultOrg)
+	imageReposEnv := getEnvWithDefault("IMAGE_GITHUB_REPOS", defaultReposEnv)
+	imageRepos := strings.Split(imageReposEnv, ",")
 
 	// fetch pushgateway url from environment variable
 	pushgateway := os.Getenv("PUSHGATEWAY_URL")
@@ -70,37 +80,61 @@ func main() {
 		log.Fatal("PUSHGATEWAY_PASSWORD not set")
 	}
 
-	// split repo string to array
-	repos := strings.Split(reposEnv, ",")
-
 	// register prometheus metrics
 	prometheus.MustRegister(releaseCounter)
 	prometheus.MustRegister(containerCounter)
 	prometheus.MustRegister(starCounter)
 
 	client := gitClient(token)
-	for _, repo := range repos {
-		log.Printf("Processing repo: %s\n", repo)
-		// fetch release info
-		releaseInfos, err := fetchReleaseInfo(client, org, repo)
+
+	// Process GitHub repositories for star count metrics
+	for _, repo := range defaultRepos {
+		log.Printf("Processing star count for repo: %s in org: %s\n", repo, defaultOrg)
+		// fetch star count
+		repoInfo, _, err := client.Repositories.Get(context.TODO(), defaultOrg, repo)
 		if err != nil {
-			log.Fatalf("Error fetching release info for repo:%s, err:%v\n", repo, err)
+			log.Printf("Error fetching star count info for repo:%s,err:%v\n", repo, err)
+			continue
+		}
+		starCounter.With(prometheus.Labels{"repository": repo}).Add(float64(*repoInfo.StargazersCount))
+	}
+
+	// Process release asset metrics
+	for _, repo := range assetsRepos {
+		log.Printf("Processing release assets for repo: %s in org: %s\n", repo, assetsOrg)
+		// fetch release info
+		releaseInfos, err := fetchReleaseInfo(client, assetsOrg, repo)
+		if err != nil {
+			log.Printf("Error fetching release info for repo:%s, err:%v\n", repo, err)
+			continue
 		}
 		// iterate over releases and set metrics
 		for _, releaseInfo := range releaseInfos {
 			for _, releaseAsset := range releaseInfo.Assets {
-				releaseCounter.With(prometheus.Labels{"repository": repo, "tag": releaseInfo.TagName, "name": *releaseAsset.Name, "content_type": *releaseAsset.ContentType}).Add(float64(*releaseAsset.DownloadCount))
+				releaseCounter.With(prometheus.Labels{
+					"repository":   repo,
+					"tag":          releaseInfo.TagName,
+					"name":         *releaseAsset.Name,
+					"content_type": *releaseAsset.ContentType,
+				}).Add(float64(*releaseAsset.DownloadCount))
 			}
 		}
-		// fetch container info
-		url := fmt.Sprintf("https://github.com/%s/%s/pkgs/container/%s/versions", org, repo, repo)
+	}
+
+	// Process container image metrics
+	for _, repo := range imageRepos {
+		log.Printf("Processing container images for repo: %s in org: %s\n", repo, imageOrg)
+
+		url := fmt.Sprintf("https://github.com/%s/%s/pkgs/container/%s/versions", imageOrg, repo, repo)
 		containerDownloads := make(map[string]int)
 		page := 1
+
 		for {
 			fmt.Println(url)
 			containerDownloadsPage, err := processContainerPackagesURL(url)
 			if err != nil {
-				log.Fatalf("Error fetching container info for repo:%s, err:%v\n", repo, err)
+				log.Printf("Error fetching container info for repo:%s, err:%v\n", repo, err)
+				break
 			}
 			if len(containerDownloadsPage) == 0 {
 				break
@@ -117,21 +151,34 @@ func main() {
 		for version, count := range containerDownloads {
 			containerCounter.With(prometheus.Labels{"repository": repo, "version": version}).Add(float64(count))
 		}
-		// fetch star count
-		repoInfo, _, err := client.Repositories.Get(context.TODO(), org, repo)
-		if err != nil {
-			log.Fatalf("Error fetching star count info for repo:%s,err:%v\n", repo, err)
-		}
-		starCounter.With(prometheus.Labels{"repository": repo}).Add(float64(*repoInfo.StargazersCount))
-
-		// push metrics to pushgateway
-		log.Println("Pushing metrics to pushgateway 🏹")
-		err = push.New(pushgateway, fmt.Sprintf("download_metrics_%s", repo)).BasicAuth(pushgatewayUsername, pushgatewayPassword).Collector(releaseCounter).Collector(containerCounter).Collector(starCounter).Push()
-		if err != nil {
-			log.Fatal("Error pushing metrics", err)
-		}
-		log.Println("👏 Successfully pushed metrics to pushgateway 👋")
 	}
+
+	// push metrics to pushgateway
+	log.Println("Pushing metrics to pushgateway 🏹")
+	metricJobName := "download_metrics"
+	if len(defaultRepos) > 0 {
+		metricJobName = fmt.Sprintf("download_metrics_%s", defaultRepos[0])
+	}
+	err := push.New(pushgateway, metricJobName).
+		BasicAuth(pushgatewayUsername, pushgatewayPassword).
+		Collector(releaseCounter).
+		Collector(containerCounter).
+		Collector(starCounter).
+		Push()
+
+	if err != nil {
+		log.Fatal("Error pushing metrics", err)
+	}
+	log.Println("👏 Successfully pushed metrics to pushgateway 👋")
+}
+
+// getEnvWithDefault returns the value of the environment variable or a default if not set
+func getEnvWithDefault(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return value
 }
 
 type ReleaseInfo struct {

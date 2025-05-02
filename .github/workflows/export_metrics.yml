@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.3.3
 
@@ -31,8 +31,9 @@ jobs:
     - name: Extract and push metrics for headlamp
       env: 
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        GITHUB_ORG: headlamp-k8s 
+        GITHUB_ORG: kubernetes-sigs
         GITHUB_REPOS: headlamp
+        IMAGE_GITHUB_ORG: headlamp-k8s
         PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
         PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
         PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
