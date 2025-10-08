@@ -12,7 +12,6 @@ import (
 	"github.com/google/go-github/v45/github"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/push"
-	"golang.org/x/net/html"
 	"golang.org/x/oauth2"
 )
 
@@ -125,18 +124,19 @@ func main() {
 	for _, repo := range imageRepos {
 		log.Printf("Processing container images for repo: %s in org: %s\n", repo, imageOrg)
 
-		url := fmt.Sprintf("https://github.com/%s/%s/pkgs/container/%s/versions", imageOrg, repo, repo)
+		url := fmt.Sprintf("https://github.com/orgs/%s/packages/container/%s/versions", imageOrg, repo)
 		containerDownloads := make(map[string]int)
 		page := 1
 
 		for {
 			fmt.Println(url)
-			containerDownloadsPage, err := processContainerPackagesURL(url)
+			containerDownloadsPage, hasMore, err := processContainerPackagesURL(url)
 			if err != nil {
 				log.Printf("Error fetching container info for repo:%s, err:%v\n", repo, err)
 				break
 			}
-			if len(containerDownloadsPage) == 0 {
+			// Stop pagination if there are no more items on the page
+			if !hasMore {
 				break
 			}
 			for version, count := range containerDownloadsPage {
@@ -212,53 +212,79 @@ func gitClient(token string) *github.Client {
 }
 
 // processContainerPackagesURL returns a map of container versions to download counts
-func processContainerPackagesURL(url string) (map[string]int, error) {
+// and a boolean indicating if the page has any versions (to continue pagination)
+func processContainerPackagesURL(url string) (map[string]int, bool, error) {
 
 	var containerDownloads = make(map[string]int)
+
 	doc, err := htmlquery.LoadURL(url)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching: %q ,err:%v", url, err)
+		return nil, false, fmt.Errorf("error fetching: %q ,err:%v", url, err)
 	}
 
-	list := htmlquery.Find(doc, `//*[@id="versions-list"]/ul/li`)
+	// Find all list items with class "Box-row" inside the versions-list
+	list := htmlquery.Find(doc, `//div[@id="versions-list"]//li[@class="Box-row"]`)
+
+	// If there are no items at all, we've reached the end of pagination
+	if len(list) == 0 {
+		return containerDownloads, false, nil
+	}
+
 	for _, item := range list {
-		versionNodes := htmlquery.Find(item, `/div/div[1]/div[1]/a`)
-		downloadCountNodes := htmlquery.Find(item, `/div/div[2]/span/text()`)
-		version := innerTextOfNodes(versionNodes)
-		downloads := innerTextOfNodes(downloadCountNodes)
-		if len(version) == 2 && version[0] == "latest" {
-			version = []string{version[1]}
-		}
-		if len(downloads) == 2 {
-			downloads[1] = strings.TrimPrefix(downloads[1], "\n")
-			downloads[1] = strings.TrimLeft(downloads[1], " ")
-			downloads[1] = strings.TrimRight(downloads[1], " ")
-			downloads[1] = strings.TrimSuffix(downloads[1], "\n")
-			downloads = []string{downloads[1]}
+		// Try to find version tag(s) - these are Label elements for tagged versions
+		versionTags := htmlquery.Find(item, `.//a[contains(@class, "Label")]`)
+
+		var version string
+		if len(versionTags) > 0 {
+			// Tagged version - extract tag names
+			var tags []string
+			for _, tag := range versionTags {
+				tagText := strings.TrimSpace(htmlquery.InnerText(tag))
+				if tagText != "" {
+					tags = append(tags, tagText)
+				}
+			}
+			// Use the first non-"latest" tag, or "latest" if that's all we have
+			for _, tag := range tags {
+				if tag != "latest" {
+					version = tag
+					break
+				}
+			}
+			if version == "" && len(tags) > 0 {
+				version = tags[0]
+			}
+		} else {
+			// Untagged version (SHA256 checksum) - skip these
+			continue
 		}
 
-		// Trim any whitespace around the download count
-		countStr := strings.TrimSpace(downloads[0])
-		// Remove decimal comma
-		countStr = strings.ReplaceAll(countStr, ",", "")
-
-		count, err := strconv.Atoi(countStr)
-		if err != nil {
-			return nil, err
+		if version == "" {
+			log.Printf("Could not extract version from item\n")
+			continue
 		}
-		containerDownloads[version[0]] = count
+
+		// Find download count - it's the text node after the download icon
+		// The download icon is an SVG with class "octicon-download"
+		downloadNodes := htmlquery.Find(item, `.//svg[contains(@class, "octicon-download")]/following-sibling::text()[1]`)
+
+		var count int
+		if len(downloadNodes) > 0 {
+			countStr := strings.TrimSpace(htmlquery.InnerText(downloadNodes[0]))
+			countStr = strings.ReplaceAll(countStr, ",", "")
+			var err error
+			count, err = strconv.Atoi(countStr)
+			if err != nil {
+				log.Printf("Error parsing download count '%s' for version %s: %v\n", countStr, version, err)
+				continue
+			}
+		} else {
+			// No download count found, default to 0
+			count = 0
+		}
+
+		containerDownloads[version] = count
 	}
-	return containerDownloads, nil
-}
-
-// innerTextOfNodes returns the inner text of a list of html nodes
-func innerTextOfNodes(nodes []*html.Node) []string {
-	innerTexts := []string{}
-	for _, node := range nodes {
-		nodeText := strings.TrimSpace(htmlquery.InnerText(node))
-		if nodeText != "" {
-			innerTexts = append(innerTexts, htmlquery.InnerText(node))
-		}
-	}
-	return innerTexts
+	// Return true to indicate there were items on this page (continue pagination)
+	return containerDownloads, true, nil
 }
