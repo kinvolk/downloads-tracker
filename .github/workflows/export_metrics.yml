@@ -39,6 +39,16 @@ jobs:
         PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
       run: go run main.go
 
+    - name: Extract and push metrics for headlamp plugins
+      env: 
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        GITHUB_ORG: headlamp-k8s 
+        GITHUB_REPOS: plugins
+        PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
+        PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
+        PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
+      run: go run main.go
+
     - name: Extract and push metrics for inspektor-gadget
       env: 
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
