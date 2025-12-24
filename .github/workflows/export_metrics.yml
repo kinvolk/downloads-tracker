@@ -18,6 +18,16 @@ jobs:
       with:
         go-version: '1.22'
 
+    - name: Extract and push metrics for aks-desktop
+      env: 
+        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_ORG: Azure
+        GITHUB_REPOS: aks-desktop
+        PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
+        PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
+        PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
+      run: go run main.go
+
     - name: Extract and push metrics for nebraska
       env: 
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
@@ -54,16 +64,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
         GITHUB_ORG: inspektor-gadget 
         GITHUB_REPOS: inspektor-gadget
-        PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
-        PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
-        PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
-      run: go run main.go
-
-    - name: Extract and push metrics for aks-desktop
-      env: 
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        GITHUB_ORG: Azure
-        GITHUB_REPOS: aks-desktop
         PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
         PUSHGATEWAY_USERNAME: ${{ secrets.PUSHGATEWAY_USERNAME }}
         PUSHGATEWAY_PASSWORD: ${{ secrets.PUSHGATEWAY_PASSWORD }}
