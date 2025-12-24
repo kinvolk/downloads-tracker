@@ -6,7 +6,6 @@ require (
 	github.com/antchfx/htmlquery v1.2.5
 	github.com/google/go-github/v45 v45.1.0
 	github.com/prometheus/client_golang v1.12.2
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
 	golang.org/x/oauth2 v0.0.0-20220608161450-d0670ef3b1eb
 )
 
@@ -22,6 +21,7 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
+	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
