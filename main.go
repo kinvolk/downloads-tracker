@@ -35,11 +35,8 @@ var starCounter = prometheus.NewCounterVec(prometheus.CounterOpts{
 
 func main() {
 
-	// fetch token from environment variable
+	// fetch token from environment variable (optional)
 	token := os.Getenv("GITHUB_TOKEN")
-	if token == "" {
-		log.Fatal("GITHUB_TOKEN not set")
-	}
 
 	// fetch default org and repos from environment variables
 	defaultOrg := os.Getenv("GITHUB_ORG")
@@ -84,13 +81,11 @@ func main() {
 	prometheus.MustRegister(containerCounter)
 	prometheus.MustRegister(starCounter)
 
-	client := gitClient(token)
-
 	// Process GitHub repositories for star count metrics
 	for _, repo := range defaultRepos {
 		log.Printf("Processing star count for repo: %s in org: %s\n", repo, defaultOrg)
-		// fetch star count
-		repoInfo, _, err := client.Repositories.Get(context.TODO(), defaultOrg, repo)
+		// fetch star count - try without token first, then with token
+		repoInfo, err := fetchStarCount(defaultOrg, repo, token)
 		if err != nil {
 			log.Printf("Error fetching star count info for repo:%s,err:%v\n", repo, err)
 			continue
@@ -101,8 +96,8 @@ func main() {
 	// Process release asset metrics
 	for _, repo := range assetsRepos {
 		log.Printf("Processing release assets for repo: %s in org: %s\n", repo, assetsOrg)
-		// fetch release info
-		releaseInfos, err := fetchReleaseInfo(client, assetsOrg, repo)
+		// fetch release info - try without token first, then with token
+		releaseInfos, err := fetchReleaseInfoWithFallback(assetsOrg, repo, token)
 		if err != nil {
 			log.Printf("Error fetching release info for repo:%s, err:%v\n", repo, err)
 			continue
@@ -186,6 +181,56 @@ type ReleaseInfo struct {
 	Assets  []*github.ReleaseAsset
 }
 
+// fetchReleaseInfoWithFallback fetches release info, trying without token first, then with token
+func fetchReleaseInfoWithFallback(org string, repo string, token string) ([]ReleaseInfo, error) {
+	// Try without authentication first
+	log.Printf("Attempting to fetch release info without authentication for %s/%s\n", org, repo)
+	client := gitClientUnauthenticated()
+	releaseInfos, err := fetchReleaseInfo(client, org, repo)
+	if err == nil {
+		log.Printf("Successfully fetched release info without authentication for %s/%s\n", org, repo)
+		return releaseInfos, nil
+	}
+	
+	// If unauthenticated request fails and token is available, try with authentication
+	if token != "" {
+		log.Printf("Unauthenticated request failed, trying with token for %s/%s: %v\n", org, repo, err)
+		client = gitClient(token)
+		releaseInfos, err = fetchReleaseInfo(client, org, repo)
+		if err == nil {
+			log.Printf("Successfully fetched release info with authentication for %s/%s\n", org, repo)
+			return releaseInfos, nil
+		}
+	}
+	
+	return nil, err
+}
+
+// fetchStarCount fetches star count, trying without token first, then with token
+func fetchStarCount(org string, repo string, token string) (*github.Repository, error) {
+	// Try without authentication first
+	log.Printf("Attempting to fetch star count without authentication for %s/%s\n", org, repo)
+	client := gitClientUnauthenticated()
+	repoInfo, _, err := client.Repositories.Get(context.TODO(), org, repo)
+	if err == nil {
+		log.Printf("Successfully fetched star count without authentication for %s/%s\n", org, repo)
+		return repoInfo, nil
+	}
+	
+	// If unauthenticated request fails and token is available, try with authentication
+	if token != "" {
+		log.Printf("Unauthenticated request failed, trying with token for %s/%s: %v\n", org, repo, err)
+		client = gitClient(token)
+		repoInfo, _, err = client.Repositories.Get(context.TODO(), org, repo)
+		if err == nil {
+			log.Printf("Successfully fetched star count with authentication for %s/%s\n", org, repo)
+			return repoInfo, nil
+		}
+	}
+	
+	return nil, err
+}
+
 // fetchReleaseInfo fetches release info for a given repo
 func fetchReleaseInfo(client *github.Client, org string, repo string) ([]ReleaseInfo, error) {
 	releases, _, err := client.Repositories.ListReleases(context.TODO(), org, repo, nil)
@@ -204,7 +249,12 @@ func fetchReleaseInfo(client *github.Client, org string, repo string) ([]Release
 	return releaseInfos, nil
 }
 
-// gitClient is a github client
+// gitClientUnauthenticated returns an unauthenticated github client
+func gitClientUnauthenticated() *github.Client {
+	return github.NewClient(nil)
+}
+
+// gitClient is a github client with authentication
 func gitClient(token string) *github.Client {
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
 	tc := oauth2.NewClient(context.TODO(), ts)
